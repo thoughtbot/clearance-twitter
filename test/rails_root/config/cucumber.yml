@@ -1,0 +1,3 @@
+<% std_opts = "--format progress features  --strict --tags ~@wip" %>
+default: <%= std_opts %>
+wip: --tags @wip:3 --wip features
