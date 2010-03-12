@@ -1,0 +1,15 @@
+<html lang="en-US" xml:lang="en-US" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Some page</title>
+  </head>
+  <body>
+    <div id="flash">
+      <% flash.each do |key, value| -%>
+        <div id="flash_<%= key %>"><%=h value %></div>
+      <% end -%>
+    </div>
+
+    <%= yield %>
+
+  </body>
+</html>

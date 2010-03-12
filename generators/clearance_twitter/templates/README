@@ -1,0 +1,16 @@
+
+*******************************************************************************
+
+Next:
+
+1. Install and configure the facebooker plugin:
+
+     script/plugin install git://github.com/mmangino/facebooker.git
+
+2. Migrate:
+
+     rake db:migrate
+
+3. Add calls to fb_connect_and_sign_up_button in your sign in and sign up forms.
+
+*******************************************************************************
