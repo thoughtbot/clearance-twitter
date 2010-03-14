@@ -33,9 +33,6 @@ class ClearanceTwitter::TwitterUsersController < ApplicationController
       sign_in(@user)
     end
 
-    # TODO: What to do here?
-    # cookies[:remember_token] = @user.remember_me
-
     flash_success_after_callback
     redirect_to url_after_callback
   rescue Net::HTTPServerException => e
