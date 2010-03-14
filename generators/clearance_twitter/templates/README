@@ -1,16 +1,13 @@
-
 *******************************************************************************
 
-Next:
+1. Configure your Twitter application OAuth key and secret:
 
-1. Install and configure the facebooker plugin:
-
-     script/plugin install git://github.com/mmangino/facebooker.git
+  config/twitter_auth.yml
 
 2. Migrate:
 
      rake db:migrate
 
-3. Add calls to fb_connect_and_sign_up_button in your sign in and sign up forms.
+3. Add calls to <%= twitter_connect_button %> in your sign in / sign up forms.
 
 *******************************************************************************

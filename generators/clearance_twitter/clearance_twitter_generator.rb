@@ -10,15 +10,12 @@ class ClearanceTwitterGenerator < Rails::Generator::Base
       end
      m.insert_into 'app/controllers/application_controller.rb',
                    'helper :clearance_twitter'
-#      m.insert_into 'app/controllers/application_controller.rb',
-#                    'include ClearanceTwitter::Authentication',
-#                    :after => 'include Clearance::Authentication'
      m.insert_into 'config/routes.rb', 'ClearanceTwitter::Routes.draw(map)'
      m.file 'sign_in_with_twitter.png', 'public/images/sign_in_with_twitter.png'
      m.file 'twitter_auth.yml', 'config/twitter_auth.yml'
      m.insert_into 'app/models/user.rb', "include ClearanceTwitter::LinkedUser",
                    :after => /include Clearance::User\s*$/
-#      m.readme "README"
+     m.readme "README"
     end
   end
 end
