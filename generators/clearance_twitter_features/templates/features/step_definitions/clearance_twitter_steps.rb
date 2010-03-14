@@ -32,20 +32,14 @@ end
 When 'I deny access to the Twitter application' do
 end
 
-Given /^remote Twitter user exists with an username of "([^\"]*)"$/ do |arg1|
-  pending # express the regexp above with the code you wish you had
-end
-
-Given /^a user exists that is connected to Twitter account "([^\"]*)"$/ do |arg1|
-  pending # express the regexp above with the code you wish you had
-end
-
-When /^I am signed into Twitter account "([^\"]*)"$/ do |arg1|
-  pending # express the regexp above with the code you wish you had
-end
-
-When /^I click the Twitter button$/ do
-  pending # express the regexp above with the code you wish you had
-end
-
-
+# Given /^remote Twitter user exists with an username of "([^\"]*)"$/ do |arg1|
+#   pending # express the regexp above with the code you wish you had
+# end
+# 
+# Given /^a user exists that is connected to Twitter account "([^\"]*)"$/ do |arg1|
+#   pending # express the regexp above with the code you wish you had
+# end
+# 
+# When /^I am signed into Twitter account "([^\"]*)"$/ do |arg1|
+#   pending # express the regexp above with the code you wish you had
+# end
