@@ -32,18 +32,18 @@ module ClearanceTwitter
       end
 
       def update_from_twitter_access_token(access_token)
-        hash = self.twitter_hash_from_access_token(access_token)
-        self.update_from_twitter_hash_and_access_token(hash, access_token)
+        hash = self.class.twitter_hash_from_access_token(access_token)
+        update_from_twitter_hash_and_access_token(hash, access_token)
       end
 
       def update_from_twitter_hash_and_access_token(hash, access_token)
-        self.populate_from_twitter_hash_and_access_token(hash, access_token)
-        self.save
+        populate_from_twitter_hash_and_access_token(hash, access_token)
+        save
         self
       end
 
       def populate_from_twitter_hash_and_access_token(hash, access_token)
-        self.assign_twitter_attributes(hash)
+        assign_twitter_attributes(hash)
         self.twitter_id = hash['id'].to_s
         self.twitter_username = hash['screen_name']
         self.twitter_access_token = access_token.token

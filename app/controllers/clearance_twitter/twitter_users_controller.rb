@@ -26,8 +26,12 @@ class ClearanceTwitter::TwitterUsersController < ApplicationController
     session[:request_token] = nil
     session[:request_token_secret] = nil
 
-    @user = User.identify_or_create_from_access_token(@access_token)
-    sign_in(@user)
+    if current_user
+      current_user.update_from_twitter_access_token(@access_token)
+    else
+      @user = User.identify_or_create_from_access_token(@access_token)
+      sign_in(@user)
+    end
 
     # TODO: What to do here?
     # cookies[:remember_token] = @user.remember_me

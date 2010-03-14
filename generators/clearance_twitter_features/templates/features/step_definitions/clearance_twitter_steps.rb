@@ -25,9 +25,17 @@ Then /^there should be (\d+) users? in the system$/ do |count|
   assert_equal count.to_i, User.count, User.all.inspect
 end
 
-Then 'I should be signed in as Twitter user "$username" with ID $twitter_id' do |twitter_username, twitter_id|
+Then /^I should be signed in as Twitter user "(.*)" with ID (\d+)$/ do |twitter_username, twitter_id|
   assert user = User.find_by_twitter_username_and_twitter_id(twitter_username, twitter_id),
     "No user exists for Twitter username #{twitter_username.inspect} and Twitter ID #{twitter_id}.
+     All users:\n#{User.all.inspect}"
+
+  assert_equal user, @controller.current_user, "Not signed in as the correct Twitter user"
+end
+
+Then /^I should be signed in as Twitter user "(.*)" with ID (\d+) and email address "(.*)"$/ do |twitter_username, twitter_id, email|
+  assert user = User.find_by_twitter_username_and_twitter_id(twitter_username, twitter_id),
+    "No user exists for Twitter username #{twitter_username.inspect} and Twitter ID #{twitter_id} and email address #{email}.
      All users:\n#{User.all.inspect}"
 
   assert_equal user, @controller.current_user, "Not signed in as the correct Twitter user"
