@@ -8,7 +8,7 @@ development:
   # Learn more at: http://apiwiki.twitter.com/Sign-in-with-Twitter
   authorize_path: "/oauth/authenticate"
 
-  oauth_callback: "http://localhost:3000/twitter_users/oauth_callback"
+  oauth_callback: "/twitter_users/oauth_callback"
   # api_timeout: 10
   # remember_for: 14 # days
 test:
@@ -19,7 +19,7 @@ test:
   authorize_path: "/oauth/authenticate"
   # api_timeout: 10
   # remember_for: 14 # days
-  oauth_callback: "http://example.com/twitter_users/oauth_callback"
+  oauth_callback: "/twitter_users/oauth_callback"
 cucumber:
   strategy: oauth
   oauth_consumer_key: testkey
@@ -28,4 +28,4 @@ cucumber:
   authorize_path: "/oauth/authenticate"
   # api_timeout: 10
   # remember_for: 14 # days
-  oauth_callback: "http://example.com/twitter_users/oauth_callback"
+  oauth_callback: "/twitter_users/oauth_callback"
