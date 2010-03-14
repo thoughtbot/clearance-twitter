@@ -141,7 +141,7 @@ module ClearanceTwitter
 
         user = User.new
         # TODO Add test to motivate #twitter_id
-        # user.twitter_id = hash['id'].to_s
+        user.twitter_id = hash['id'].to_s
         user.twitter_username = hash['screen_name']
         user.assign_twitter_attributes(hash)
 

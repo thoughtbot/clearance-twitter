@@ -16,28 +16,24 @@ When 'I click the Sign in with Twitter button' do
   click_link 'Sign in using Twitter'
 end
 
+# Then 'I should be directed to sign in with Twitter' do
+#   assert_redirected_to 'foo.com'
+# end
+
 Then /^there should be (\d+) users? in the system$/ do |count|
   assert_equal count.to_i, User.count, User.all.inspect
 end
 
-Then 'I should be signed in as Twitter user "$username"' do |twitter_username|
-  assert user = User.find_by_twitter_username(twitter_username), "No user exists for Twitter username #{twitter_username.inspect}.  Users:\n#{User.all.inspect}"
+Then 'I should be signed in as Twitter user "$username" with ID $twitter_id' do |twitter_username, twitter_id|
+  assert user = User.find_by_twitter_username_and_twitter_id(twitter_username, twitter_id),
+    "No user exists for Twitter username #{twitter_username.inspect} and Twitter ID #{twitter_id}.
+     All users:\n#{User.all.inspect}"
+
   assert_equal user, @controller.current_user, "Not signed in as the correct Twitter user"
 end
 
-When 'I grant access to the Twitter application for Twitter user "$twitter_username"' do |twitter_username|
-  # user = stub('user', :id => '1', :remember_me => '2', :login => 'boys', :geocoded_location => FakeGeocoder.geocode() )
-  # request_token = stub('request_token', :get_access_token => 'access_token')
-  # User.stubs(:identify_or_create_from_access_token).returns(user)
-  # CrushesController.any_instance.stubs(:current_user).returns(user)
-  # OAuth::RequestToken.stubs(:new).returns(request_token)
-  #
-# {:session_id=>"4f7fe62bf1ed8509899b954469b12e16", :request_token_secret=>"same_for_this", :request_token=>"this_need_not_be_real"}
-# ---Params---
-# {"action"=>"oauth_callback", "oauth_verifier"=>"verifier", "oauth_token"=>"token", "controller"=>"clearance_twitter/twitter_users"}
-#     And I grant access to the Twitter application for Twitter user "jerk
-  
-  FakeTwitter.stub_verify_credentials_for(twitter_username)
+When 'I grant access to the Twitter application for Twitter user "$twitter_username" with ID $twitter_id' do |twitter_username, twitter_id|
+  FakeTwitter.stub_verify_credentials_for(:twitter_username => twitter_username, :twitter_id => twitter_id)
   visit oauth_callback_twitter_users_url(:oauth_token => 'this_need_not_be_real', :oauth_verifier => 'verifier')
 end
 

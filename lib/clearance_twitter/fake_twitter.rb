@@ -26,11 +26,20 @@ class FakeTwitter
       WebMock.stub_request(method, url).to_return(response_options)
     end
 
-    def stub_verify_credentials_for(twitter_username)
+    def stub_verify_credentials_for(options)
+      twitter_username = options.delete(:twitter_username)
+      twitter_id = options.delete(:twitter_id)
+      response_json = <<-JSON
+        {
+          "screen_name":"#{twitter_username}",
+          "id":"#{twitter_id}"
+        }
+      JSON
+
       verify_credentials_url = ClearanceTwitter.base_url + '/account/verify_credentials.json'
       stub_request(:get, verify_credentials_url, {
         :status => 200,
-        :body => %|{"screen_name":"#{twitter_username}"}|
+        :body => response_json
       })
     end
 
