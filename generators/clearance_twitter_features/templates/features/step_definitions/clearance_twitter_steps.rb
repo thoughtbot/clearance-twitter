@@ -18,10 +18,7 @@ end
 
 Then 'I should be directed to sign in with Twitter' do
   request_token = ClearanceTwitter.consumer.get_request_token
-  authorize_url = request_token.authorize_url
-  authorize_url << "&oauth_callback=#{CGI.escape(ClearanceTwitter.oauth_callback)}"
-
-  assert_redirected_to authorize_url
+  assert_redirected_to request_token.authorize_url
 end
 
 Then /^there should be (\d+) users? in the system$/ do |count|
