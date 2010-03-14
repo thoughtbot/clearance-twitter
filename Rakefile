@@ -16,7 +16,14 @@ namespace :test do
   Cucumber::Rake::Task.new(:features => ["link",
                                          "generator:clearance_twitter",
                                          "generator:clearance_twitter_features"]) do |t|
-    t.cucumber_opts   = "--format progress"
+    t.cucumber_opts   = "--format pretty"
+    t.profile = 'features'
+  end
+
+  Cucumber::Rake::Task.new(:wip => ["link",
+                                    "generator:clearance_twitter",
+                                    "generator:clearance_twitter_features"]) do |t|
+    t.cucumber_opts   = "--format pretty --tags @wip"
     t.profile = 'features'
   end
 end
