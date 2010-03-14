@@ -1,0 +1,31 @@
+development:
+  oauth_consumer_key: add_your_consumer_key_here
+  oauth_consumer_secret: add_your_consumer_secret_here
+  base_url: "https://twitter.com"
+
+  # Use /oauth/authorize for traditional OAuth
+  # Use /oauth/authenticate for the more streamlined "Sign in with Twitter"
+  # Learn more at: http://apiwiki.twitter.com/Sign-in-with-Twitter
+  authorize_path: "/oauth/authenticate"
+
+  # api_timeout: 10
+  # remember_for: 14 # days
+  oauth_callback: "http://localhost:3000/oauth_callback_twitter_users"
+test:
+  strategy: oauth
+  oauth_consumer_key: testkey
+  oauth_consumer_secret: testsecret
+  base_url: "https://twitter.com"
+  authorize_path: "/oauth/authenticate"
+  # api_timeout: 10
+  # remember_for: 14 # days
+  oauth_callback: "http://localhost:3000/oauth_callback_twitter_users"
+cucumber:
+  strategy: oauth
+  oauth_consumer_key: testkey
+  oauth_consumer_secret: testsecret
+  base_url: "https://twitter.com"
+  authorize_path: "/oauth/authenticate"
+  # api_timeout: 10
+  # remember_for: 14 # days
+  oauth_callback: "http://localhost:3000/oauth_callback_twitter_users"

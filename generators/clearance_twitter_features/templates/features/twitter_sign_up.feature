@@ -3,15 +3,15 @@ Feature: Sign up with Twitter OAuth
   A visitor to the site
   Should be able to sign up with Twitter OAuth
 
-  @wip
   Scenario: User successfully signs up with Twitter OAuth
     Given there are no users
     And Twitter OAuth is faked
     And I go to the sign up page
     And I click the Sign in with Twitter button
     And I grant access to the Twitter application for Twitter user "jerkcity"
-    Then I should be signed in as Twitter user "jerkcity"
+    Then I should see "Successfully signed in with Twitter."
     And there should be 1 user in the system
+    And I should be signed in as Twitter user "jerkcity"
 
     # Deny access
     # http://beerfire.heroku.com/oauth_callback?denied=gDvIISsUyVIKEsMZSmMCWPUOy3VwMU5xcRfc52GzMqk
