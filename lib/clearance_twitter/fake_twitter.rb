@@ -24,7 +24,6 @@ class FakeTwitter
     end
   end
 
-  gem 'webmock'
   require 'webmock'
 
   class WebMockBackend
