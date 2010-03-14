@@ -5,7 +5,7 @@ Feature: Sign in with Twitter OAuth
 
   Scenario: User signs in with Twitter
     Given there are no users
-    And Twitter OAuth is faked
+    And the Twitter OAuth request is successful
     And the following user exists:
       | twitter_username | twitter_id |
       | jerkcity         | 999        |

@@ -1,4 +1,4 @@
-* Deny access scenario
 * Right now, send_confirmation_email sends even for twitter users; it's okay since they don't have an email, but we still shouldn't send one.
 * Make it easy to not use WebMock
 * Clean up TODOs
+* Scenario: Signed in user connects their Twitter account

@@ -27,7 +27,6 @@ class ClearanceTwitter::TwitterUsersController < ApplicationController
     session[:request_token_secret] = nil
 
     @user = User.identify_or_create_from_access_token(@access_token)
-
     sign_in(@user)
 
     # TODO: What to do here?
@@ -42,6 +41,8 @@ class ClearanceTwitter::TwitterUsersController < ApplicationController
     else
       deny_access('There was a problem trying to authenticate you. Please try again.') and return
     end 
+  rescue OAuth::Unauthorized => e
+    deny_access('There was a problem trying to authenticate you. Please try again.') and return
   end
 
   private
