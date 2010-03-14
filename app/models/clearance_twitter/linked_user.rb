@@ -7,12 +7,10 @@ module ClearanceTwitter
     ]
 
     def self.included(model)
-      # TODO Unit test the following
-      # base.class_eval do
-      #   attr_protected :access_token, :access_secret
-      # end
-
       model.class_eval do
+        # TODO Unit test the attr_protected
+        attr_protected :access_token, :access_secret
+
         extend ClearanceTwitter::LinkedUser::ClassMethods
         include ClearanceTwitter::LinkedUser::InstanceMethods
       end
