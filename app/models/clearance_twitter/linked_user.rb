@@ -1,42 +1,5 @@
 module ClearanceTwitter
-  module Dispatcher
-    module Shared
-      # def post!(status)
-      #   self.post('/statuses/update.json', :status => status)
-      # end
-
-      # def append_extension_to(path)
-      #   path, query_string = *(path.split("?"))
-      #   path << '.json' unless path.match(/\.(:?xml|json)\z/i)
-      #   "#{path}#{"?#{query_string}" if query_string}"
-      # end
-
-      def handle_response(response)
-        case response
-        when Net::HTTPOK 
-          begin
-            JSON.parse(response.body)
-          rescue JSON::ParserError
-            response.body
-          end
-        when Net::HTTPUnauthorized
-          raise TwitterAuth::Dispatcher::Unauthorized, 'The credentials provided did not authorize the user.'
-        else
-          message = begin
-            JSON.parse(response.body)['error']
-          rescue JSON::ParserError
-            if match = response.body.match(/<error>(.*)<\/error>/)
-              match[1]
-            else
-              'An error occurred processing your Twitter request.'
-            end
-          end
-
-          raise TwitterAuth::Dispatcher::Error, message
-        end
-      end
-    end
-  end
+  class Unauthorized < Exception; end
 
   module LinkedUser
     TWITTER_ATTRIBUTES = [
@@ -51,8 +14,7 @@ module ClearanceTwitter
 
       model.class_eval do
         extend ClearanceTwitter::LinkedUser::ClassMethods
-        extend ClearanceTwitter::Dispatcher::Shared
-        include InstanceMethods
+        include ClearanceTwitter::LinkedUser::InstanceMethods
       end
     end
 
@@ -69,6 +31,25 @@ module ClearanceTwitter
         twitter_access_token.present?
       end
 
+      def update_from_twitter_access_token(access_token)
+        hash = self.twitter_hash_from_access_token(access_token)
+        self.update_from_twitter_hash_and_access_token(hash, access_token)
+      end
+
+      def update_from_twitter_hash_and_access_token(hash, access_token)
+        self.populate_from_twitter_hash_and_access_token(hash, access_token)
+        self.save
+        self
+      end
+
+      def populate_from_twitter_hash_and_access_token(hash, access_token)
+        self.assign_twitter_attributes(hash)
+        self.twitter_id = hash['id'].to_s
+        self.twitter_username = hash['screen_name']
+        self.twitter_access_token = access_token.token
+        self.twitter_access_secret = access_token.secret
+      end
+
       def assign_twitter_attributes(hash)
         TWITTER_ATTRIBUTES.each do |att|
           send("#{att}=", hash[att.to_s]) if respond_to?("#{att}=")
@@ -77,49 +58,52 @@ module ClearanceTwitter
     end
 
     module ClassMethods
-      def identify_or_create_from_access_token(token, secret=nil)
-        # raise ArgumentError, 'Must authenticate with an OAuth::AccessToken or the string access token and secret.' unless (token && secret) || token.is_a?(OAuth::AccessToken)
+      def twitter_hash_from_access_token(access_token, secret=nil)
+        unless (access_token && secret) || access_token.is_a?(OAuth::AccessToken)
+          raise ArgumentError, 'Must authenticate with an OAuth::AccessToken or the string access token and secret.'
+        end
 
-        token = OAuth::AccessToken.new(ClearanceTwitter.consumer, token, secret) unless token.is_a?(OAuth::AccessToken)
+        access_token = OAuth::AccessToken.new(ClearanceTwitter.consumer, access_token, secret) unless access_token.is_a?(OAuth::AccessToken)
+        response = access_token.get(ClearanceTwitter.path_prefix + '/account/verify_credentials.json')
+        twitter_hash = handle_response(response)
+      end
 
-        response = token.get(ClearanceTwitter.path_prefix + '/account/verify_credentials.json')
-        user_info = handle_response(response)
+      def identify_or_create_from_access_token(access_token, secret=nil)
+        twitter_hash = twitter_hash_from_access_token(access_token, secret)
+        twitter_username = twitter_hash['screen_name'].to_s
 
-        if user = User.find_by_twitter_username(user_info['screen_name'].to_s)
-          user.twitter_username = user_info['screen_name']
-          user.assign_twitter_attributes(user_info)
-          user.twitter_access_token = token.token
-          user.twitter_access_secret = token.secret
-          user.save
-          user
+        user = User.find_by_twitter_username(twitter_username) || User.new
+        user.update_from_twitter_hash_and_access_token(twitter_hash, access_token)
+      end
+
+      private
+
+      # TODO: Re-TDD this method
+      def handle_response(response)
+        case response
+        when Net::HTTPOK 
+          begin
+            JSON.parse(response.body)
+          rescue JSON::ParserError
+            response.body
+          end
+        when Net::HTTPUnauthorized
+          raise ClearanceTwitter::Unauthorized, 'The credentials provided did not authorize the user.'
         else
-          User.create_from_twitter_hash_and_token(user_info, token) 
+          message = begin
+            JSON.parse(response.body)['error']
+          rescue JSON::ParserError
+            if match = response.body.match(/<error>(.*)<\/error>/)
+              match[1]
+            else
+              'An error occurred processing your Twitter request.'
+            end
+          end
+
+          raise TwitterAuth::Dispatcher::Error, message
         end
       end
-
-      def create_from_twitter_hash_and_token(user_info, access_token)
-        user = User.new_from_twitter_hash(user_info)
-        user.twitter_access_token = access_token.token
-        user.twitter_access_secret = access_token.secret
-        user.save
-        user
-      end
-
-      def new_from_twitter_hash(hash)
-        # raise ArgumentError, 'Invalid hash: must include screen_name.' unless hash.key?('screen_name')
-        # raise ArgumentError, 'Invalid hash: must include id.' unless hash.key?('id')
-
-        user = User.new
-        user.twitter_id = hash['id'].to_s
-        user.twitter_username = hash['screen_name']
-        user.assign_twitter_attributes(hash)
-        user
-      end
     end
-
-    # def token
-    #   OAuth::AccessToken.new(TwitterAuth.consumer, access_token, access_secret)
-    # end 
   end
 end
 
