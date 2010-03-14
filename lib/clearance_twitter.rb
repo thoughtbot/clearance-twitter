@@ -5,8 +5,12 @@ module ClearanceTwitter
   def self.config(environment=RAILS_ENV)
     {
       'oauth_consumer_key' => 'key',
-      'oauth_consumer_secret' => 'secret'
+      'oauth_consumer_secret' => 'secret',
+      'base_url' => "https://twitter.com",
+      'authorize_path' => "/oauth/authenticate",
+      'oauth_callback' => "http://localhost:3000/oauth_callback"
     }
+
 
     # TODO
     # @config ||= {}
@@ -17,21 +21,25 @@ module ClearanceTwitter
     config['base_url'] || 'https://twitter.com'
   end
   
-  def self.consumer
-    options = {:site => ClearanceTwitter.base_url}
-    [ :authorize_path,
-      :request_token_path,
-      :access_token_path,
-      :scheme,
-      :signature_method ].each do |oauth_option|
-      options[oauth_option] = ClearanceTwitter.config[oauth_option.to_s] if ClearanceTwitter.config[oauth_option.to_s]
-      end
+  mattr_accessor :consumer
 
-    OAuth::Consumer.new(
-      config['oauth_consumer_key'],
-      config['oauth_consumer_secret'],
-      options
-    )
+  def self.consumer
+    @@consumer ||= begin
+      options = {:site => ClearanceTwitter.base_url}
+      [ :authorize_path,
+        :request_token_path,
+        :access_token_path,
+        :scheme,
+        :signature_method ].each do |oauth_option|
+        options[oauth_option] = ClearanceTwitter.config[oauth_option.to_s] if ClearanceTwitter.config[oauth_option.to_s]
+        end
+
+      OAuth::Consumer.new(
+        config['oauth_consumer_key'],
+        config['oauth_consumer_secret'],
+        options
+      )
+    end
   end
 
   # class Error < StandardError; end

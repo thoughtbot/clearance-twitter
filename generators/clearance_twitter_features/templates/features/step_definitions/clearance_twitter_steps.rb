@@ -43,3 +43,31 @@ end
 # When /^I am signed into Twitter account "([^\"]*)"$/ do |arg1|
 #   pending # express the regexp above with the code you wish you had
 # end
+
+Given /^Twitter OAuth is faked$/ do
+  FakeTwitter.stub_oauth
+  # [TwitterAuth.config['authorize_path'], '/oauth/request_token', '/oauth/authorize', '/oauth/access_token'].each do |path|
+  #   FakeWeb.register_uri(:any, TwitterAuth.config['base_url'] + path, :body => '')
+  # end
+
+  # request_token = stub('request_token',
+  #                      :authorize_url => TwitterAuth.config['base_url'] + TwitterAuth.config['authorize_path'],
+  #                      :token => 'token',
+  #                      :secret => 'secret')
+  # consumer = stub('consumer', :get_request_token => request_token)
+  # TwitterAuth.stubs(:consumer).returns(consumer)
+end
+
+# Then /^I should be directed to Twitter OAuth$/ do
+#   assert_redirected_to(TwitterAuth.config['base_url'] + TwitterAuth.config['authorize_path'] + '&oauth_callback=' + CGI.escape(TwitterAuth.config['oauth_callback']))
+# end
+# 
+# When /^I return from Twitter OAuth with a valid OAuth verifier for "@([^\"]*)"$/ do |username|
+#   user = stub('user', :id => '1', :remember_me => '2', :login => 'boys', :geocoded_location => FakeGeocoder.geocode() )
+#   request_token = stub('request_token', :get_access_token => 'access_token')
+#   User.stubs(:identify_or_create_from_access_token).returns(user)
+#   CrushesController.any_instance.stubs(:current_user).returns(user)
+#   OAuth::RequestToken.stubs(:new).returns(request_token)
+#   visit oauth_callback_url(:oauth_token => 'token', :oauth_verifier => 'verifier')
+# end
+

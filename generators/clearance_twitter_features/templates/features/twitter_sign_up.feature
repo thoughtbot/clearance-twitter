@@ -6,6 +6,7 @@ Feature: Sign up with Twitter OAuth
   @wip
   Scenario: User successfully signs up with Twitter OAuth
     Given there are no users
+    And Twitter OAuth is faked
     And I go to the sign up page
     And I click the Sign in with Twitter button
     And I grant access to the Twitter application for Twitter user "jerkcity"

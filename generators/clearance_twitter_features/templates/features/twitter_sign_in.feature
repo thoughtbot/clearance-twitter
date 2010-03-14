@@ -5,6 +5,7 @@ Feature: Sign in with Twitter OAuth
 
   Scenario: User signs in with Twitter
     Given there are no users
+    And Twitter OAuth is faked
     And a user exists with a twitter username of "jerkcity"
     When I go to the sign in page
     And I click the Sign in with Twitter button
