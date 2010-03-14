@@ -74,23 +74,6 @@ module ClearanceTwitter
           send("#{att}=", hash[att.to_s]) if respond_to?("#{att}=")
         end
       end
-
-      # def facebook_user
-      #   if facebook_user?
-      #     Facebooker::User.new(fb_user_id)
-      #   else
-      #     nil
-      #   end
-      # end
-
-      # def linked_on_facebook_to?(facebook_user)
-      #   facebook_user.uid == fb_user_id
-      # end
-
-      # def link_on_facebook_to(facebook_user)
-      #   self.fb_user_id = facebook_user.uid
-      #   save
-      # end
     end
 
     module ClassMethods
@@ -102,26 +85,14 @@ module ClearanceTwitter
         response = token.get(ClearanceTwitter.path_prefix + '/account/verify_credentials.json')
         user_info = handle_response(response)
 
-        puts "*"*80
-        puts "user_info:"
-        p user_info
-
         if user = User.find_by_twitter_username(user_info['screen_name'].to_s)
-          puts "found existing user with twitter_username"
           user.twitter_username = user_info['screen_name']
           user.assign_twitter_attributes(user_info)
           user.twitter_access_token = token.token
           user.twitter_access_secret = token.secret
-          raise "Inside #identify_or_create_from_access_token, trying to save invalid user:\n#{user.errors.full_messages}" if !user.valid?
           user.save
-
-          puts "*"*80
-          puts "the new User:"
-          p user
-
           user
         else
-          puts "found existing user with twitter_username"
           User.create_from_twitter_hash_and_token(user_info, token) 
         end
       end
@@ -130,7 +101,6 @@ module ClearanceTwitter
         user = User.new_from_twitter_hash(user_info)
         user.twitter_access_token = access_token.token
         user.twitter_access_secret = access_token.secret
-        raise "Inside #create_from_twitter_hash_and_token, trying to save invalid user:\n#{user.errors.full_messages}" if !user.valid?
         user.save
         user
       end
@@ -140,11 +110,9 @@ module ClearanceTwitter
         # raise ArgumentError, 'Invalid hash: must include id.' unless hash.key?('id')
 
         user = User.new
-        # TODO Add test to motivate #twitter_id
         user.twitter_id = hash['id'].to_s
         user.twitter_username = hash['screen_name']
         user.assign_twitter_attributes(hash)
-
         user
       end
     end

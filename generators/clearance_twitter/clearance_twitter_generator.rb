@@ -8,8 +8,8 @@ class ClearanceTwitterGenerator < Rails::Generator::Base
                              'db/migrate',
                              :migration_file_name => "add_clearance_twitter_fields_to_users"
       end
-#      m.insert_into 'app/controllers/application_controller.rb',
-#                    'helper :clearance_twitter'
+     m.insert_into 'app/controllers/application_controller.rb',
+                   'helper :clearance_twitter'
 #      m.insert_into 'app/controllers/application_controller.rb',
 #                    'include ClearanceTwitter::Authentication',
 #                    :after => 'include Clearance::Authentication'

@@ -16,9 +16,13 @@ When 'I click the Sign in with Twitter button' do
   click_link 'Sign in using Twitter'
 end
 
-# Then 'I should be directed to sign in with Twitter' do
-#   assert_redirected_to 'foo.com'
-# end
+Then 'I should be directed to sign in with Twitter' do
+  request_token = ClearanceTwitter.consumer.get_request_token
+  authorize_url = request_token.authorize_url
+  authorize_url << "&oauth_callback=#{CGI.escape(ClearanceTwitter.oauth_callback)}"
+
+  assert_redirected_to authorize_url
+end
 
 Then /^there should be (\d+) users? in the system$/ do |count|
   assert_equal count.to_i, User.count, User.all.inspect
@@ -40,33 +44,6 @@ end
 When 'I deny access to the Twitter application' do
 end
 
-# Given /^remote Twitter user exists with an username of "([^\"]*)"$/ do |arg1|
-#   pending # express the regexp above with the code you wish you had
-# end
-# 
-# Given /^a user exists that is connected to Twitter account "([^\"]*)"$/ do |arg1|
-#   pending # express the regexp above with the code you wish you had
-# end
-# 
-# When /^I am signed into Twitter account "([^\"]*)"$/ do |arg1|
-#   pending # express the regexp above with the code you wish you had
-# end
-
 Given /^Twitter OAuth is faked$/ do
   FakeTwitter.stub_oauth
-  # [TwitterAuth.config['authorize_path'], '/oauth/request_token', '/oauth/authorize', '/oauth/access_token'].each do |path|
-  #   FakeWeb.register_uri(:any, TwitterAuth.config['base_url'] + path, :body => '')
-  # end
-
-  # request_token = stub('request_token',
-  #                      :authorize_url => TwitterAuth.config['base_url'] + TwitterAuth.config['authorize_path'],
-  #                      :token => 'token',
-  #                      :secret => 'secret')
-  # consumer = stub('consumer', :get_request_token => request_token)
-  # TwitterAuth.stubs(:consumer).returns(consumer)
 end
-
-# Then /^I should be directed to Twitter OAuth$/ do
-#   assert_redirected_to(TwitterAuth.config['base_url'] + TwitterAuth.config['authorize_path'] + '&oauth_callback=' + CGI.escape(TwitterAuth.config['oauth_callback']))
-# end
-

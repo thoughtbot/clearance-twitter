@@ -11,7 +11,7 @@ Feature: Sign in with Twitter OAuth
       | jerkcity         | 999        |
     When I go to the sign in page
     And I click the Sign in with Twitter button
-    # Then I should be directed to sign in with Twitter
+    Then I should be directed to sign in with Twitter
     When I grant access to the Twitter application for Twitter user "jerkcity" with ID 999
     Then I should see "Successfully signed in with Twitter."
     And there should be 1 user in the system

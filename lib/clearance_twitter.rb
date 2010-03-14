@@ -56,8 +56,8 @@ module ClearanceTwitter
   #   config.key?('oauth_callback')
   # end
 
-  # def self.oauth_callback
-  #   config['oauth_callback']
-  # end
+  def self.oauth_callback
+    config['oauth_callback'] || '/twitter_users/oauth_callback'
+  end
 
 end
