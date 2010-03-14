@@ -1,0 +1,11 @@
+log/*
+tmp/**/*
+public/system
+*.DS_Store
+coverage/*
+*.swp
+*.swo
+*.swn
+
+!.keep
+rerun.txt
