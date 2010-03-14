@@ -3,10 +3,9 @@ Feature: Sign in with Twitter OAuth
   An existing user
   Should be able to sign in with Twitter OAuth
 
-  Scenario: User has already signed up with Twitter OAuth
+  Scenario: User signs in with Twitter
     Given there are no users
-    And remote Twitter user exists with an username of "jerkcity"
-    And a user exists that is connected to Twitter account "jerkcity"
+    And a user exists with a twitter username of "jerkcity"
     When I go to the sign in page
     And I click the Sign in with Twitter button
     And I grant access to the Twitter application for Twitter user "jerkcity"

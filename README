@@ -1,0 +1,2 @@
+* You need to add the <%= twitter_connect_button %> to your sessions/new.html.erb
+* You need to add the <%= twitter_connect_button %> to your users/new.html.erb
