@@ -7,7 +7,8 @@ class ClearanceTwitterFeaturesGenerator < Rails::Generator::Base
 
       ["features/step_definitions/clearance_twitter_steps.rb",
        "features/twitter_sign_in.feature",
-       "features/twitter_sign_up.feature"].each do |file|
+       "features/twitter_sign_up.feature",
+       "features/support/clearance_twitter_support.rb"].each do |file|
         m.file file, file
        end
 
