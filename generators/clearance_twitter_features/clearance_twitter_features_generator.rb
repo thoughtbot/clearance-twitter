@@ -10,10 +10,7 @@ class ClearanceTwitterFeaturesGenerator < Rails::Generator::Base
        "features/twitter_sign_up.feature",
        "features/support/clearance_twitter_support.rb"].each do |file|
         m.file file, file
-       end
-
-      m.insert_into 'features/support/env.rb', 'World(WebMockTwitterFake)'
-      m.insert_into 'features/support/env.rb', 'World(TwitterFake)'
+      end
     end
   end
 end
