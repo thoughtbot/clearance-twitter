@@ -1,11 +1,7 @@
-require 'clearance_twitter/fake_twitter'
+require 'clearance_twitter/twitter_fake'
 
 Before do
-  # You can override the HTTP faking implementation like this, if you prefer:
-  # FakeTwitter.implemenation = FakeTwitter::SomeOtherBackend.new
-  #
-  # The default uses WebMock via FakeTwitter::WebMockBackend
-  FakeTwitter.disable_remote_http
+  disable_remote_http
 end
 
 Given 'there are no users' do
@@ -42,17 +38,17 @@ Then /^I should be signed in as Twitter user "(.*)" with ID (\d+) and email addr
 end
 
 When 'I grant access to the Twitter application for Twitter user "$twitter_username" with ID $twitter_id' do |twitter_username, twitter_id|
-  FakeTwitter.stub_twitter_successful_access_token
-  FakeTwitter.stub_verify_credentials_for(:twitter_username => twitter_username, :twitter_id => twitter_id)
+  stub_twitter_successful_access_token
+  stub_twitter_verify_credentials_for(:twitter_username => twitter_username, :twitter_id => twitter_id)
 
   visit oauth_callback_twitter_users_url(:oauth_token => 'this_need_not_be_real', :oauth_verifier => 'verifier')
 end
 
 When 'I deny access to the Twitter application' do
-  FakeTwitter.stub_twitter_denied_access_token
+  stub_twitter_denied_access_token
   visit oauth_callback_twitter_users_url(:denied => 'denied_token')
 end
 
 Given /^the Twitter OAuth request is successful$/ do
-  FakeTwitter.stub_twitter_request_token
+  stub_twitter_request_token
 end

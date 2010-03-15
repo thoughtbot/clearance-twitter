@@ -1,3 +1,4 @@
 * Right now, send_confirmation_email sends even for twitter users; it's okay since they don't have an email, but we still shouldn't send one.
 * Make it easy to not use WebMock
 * Clean up TODOs
+* Make ClearanceTwitter::LinkedUser::TWITTER_ATTRIBUTES (set of attrs copied from profile to User upon connect) easier to change / document it

@@ -2,6 +2,7 @@ module ClearanceTwitter
   class Unauthorized < Exception; end
 
   module LinkedUser
+    # Attrs to copy from the twitter user hash onto the User model upon connect
     TWITTER_ATTRIBUTES = [
       :name
     ]
