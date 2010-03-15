@@ -2,3 +2,13 @@
 * Make it easy to not use WebMock
 * Clean up TODOs
 * Make ClearanceTwitter::LinkedUser::TWITTER_ATTRIBUTES (set of attrs copied from profile to User upon connect) easier to change / document it
+
+* Move the following steps up into clearance proper, from c-t and c-f:
+
+Then /^there should be (\d+) users? in the system$/ do |count|
+  assert_equal count.to_i, User.count, User.all.inspect
+end
+
+Given 'there are no users' do
+  User.delete_all
+end
