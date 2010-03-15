@@ -1,17 +1,19 @@
 Use Twitter OAuth authentication on top of Clearance.
 
-To install:
+1. Install:
 
     script/plugin install git@github.com:thoughtbot/clearance-twitter.git
-    script/generate clearance_twitter
 
-If you want cucumber features:
+2. Get to red by generating the features:
 
     script/generate clearance_twitter_features
 
-See generators/clearance_twitter/templates/README (displayed when you
-generate) for more information.
+3. Get to green by generating the code:
+
+    script/generate clearance_twitter
+
 
 The cucumber features use WebMock to fake twitter.com OAuth responses.
-If you'd like to use another tool for this, see
+If you'd like to use another tool for this, see the generated file:
 
+    features/support/clearance_twitter_support.rb
