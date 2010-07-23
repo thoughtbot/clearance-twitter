@@ -9,7 +9,8 @@ module TwitterFake
     response_json = <<-JSON
       {
         "screen_name":"#{twitter_username}",
-        "id":"#{twitter_id}"
+        "id":"#{twitter_id}",
+        "profile_image_url":"http://a3.twimg.com/profile_images/518003899/username_normal.png"
       }
     JSON
 
