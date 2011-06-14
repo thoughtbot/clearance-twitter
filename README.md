@@ -1,3 +1,11 @@
+DEPRECATED
+==========
+
+This project is deprecated and no longer maintained. We recommend that you use [Omniauth](https://github.com/intridea/omniauth) instead.
+
+Twitter Clearance
+-----------------
+
 Use Twitter OAuth authentication on top of Clearance.
 
 1. Install:
